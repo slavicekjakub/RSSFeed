@@ -1,0 +1,28 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+input[type="date"] {
+  background-color: lightgoldenrodyellow;
+  color: black;
+  padding: 5px;
+  font-family: "Roboto Mono",monospace;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+}
