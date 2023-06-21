@@ -15,6 +15,14 @@
     <button class="btn btn-danger" onclick="deleteSelected()">Smazat označené</button>
 </p>
 
+@using (Html.BeginForm("Index", "RssFeeds", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <label for="filter">Zadejte text feedu nebo nadpis:</label>
+    <input type="text" id="filter" name="filter">
+    <button id="filter-button" class="btn btn-primary">Filtr</button>  
+    <a asp-action="Index" class="btn btn-success">Zrušit filtr</a>
+}
+
 <table class="table">
     <thead>
         <tr>

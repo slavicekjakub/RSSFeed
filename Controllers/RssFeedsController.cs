@@ -24,11 +24,38 @@ namespace RSSFeed.Controllers
     }
 
     // GET: RssFeeds
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string? filter)
     {
-      return _context.RSSFeeds != null ?
-                  View(await _context.RSSFeeds.ToListAsync()) :
-                  Problem("Entity set 'RSSFeedContext.RSSFeeds'  is null.");
+      bool find = false;
+      if (filter == null)
+        return _context.RSSFeeds != null ?
+                    View(await _context.RSSFeeds.ToListAsync()) :
+                    Problem("Entity set 'RSSFeedContext.RSSFeeds'  is null.");
+      else
+      {
+        List<RssFeeds> feeds = await _context.RSSFeeds.ToListAsync();
+        for (int i =feeds.Count - 1; i >= 0; i--)
+        {
+          find = false;
+
+          if (feeds[i].Name.Contains(filter))
+            continue;
+
+          List<Article> articles = _xmlHelper.GetXmlFromUrl(feeds[i].Url);
+
+          foreach (Article article in articles)
+          {
+            if (!find)
+              if (article.Title.Contains(filter))
+                find = true;
+          }
+          if (!find)
+          {
+            feeds.Remove(feeds[i]);
+          }
+        }
+        return View(feeds);
+      }
     }
 
     // GET: RssFeeds/Details/5
@@ -101,8 +128,6 @@ namespace RSSFeed.Controllers
     }
 
     // POST: RssFeeds/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Name,Url")] RssFeeds rssFeeds)
@@ -133,8 +158,6 @@ namespace RSSFeed.Controllers
     }
 
     // POST: RssFeeds/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Url")] RssFeeds rssFeeds)
@@ -211,7 +234,7 @@ namespace RSSFeed.Controllers
         var selectedData = _context.RSSFeeds.Where(d => selectedIds.Contains(d.Id));
 
         _context.RSSFeeds.RemoveRange(selectedData);
-         await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
       }
       return RedirectToAction(nameof(Index));
     }
