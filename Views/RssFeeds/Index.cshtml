@@ -7,17 +7,26 @@
 
 <h1>RSS Feed</h1>
 
+
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Přidat nový</a>
+    <button class="btn btn-info" onClick="SelectAll()">Označit všechny</button>
+    <button class="btn btn-primary" onClick="UnselectAll()">Odznačit všechny</button>
+    <button class="btn btn-danger" onclick="deleteSelected()">Smazat označené</button>
 </p>
+
 <table class="table">
     <thead>
         <tr>
+            <th>Id</th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Název
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th>
+                Označené
             </th>
             <th></th>
         </tr>
@@ -27,18 +36,56 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Url)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                    <a asp-action="ArticleList" asp-route-id="@item.Id" class="btn btn-info">ArticleList</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    <input type="checkbox" name="forDelete" asp-for="@item.IsSelected" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Upravit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detail</a>
+                    <a asp-action="ArticleList" asp-route-id="@item.Id" class="btn btn-info">Přehled článků</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Smazat</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+  function SelectAll() {
+    $("input[name='forDelete']").prop("checked", true);
+  }
+
+  function UnselectAll() {
+    $("input[name='forDelete']").prop("checked", false);
+  }
+
+  function deleteSelected() {
+    var selectedIds = [];
+
+    // Získání ID označených sloupců
+    $("input[name='forDelete']:checked").each(function () {
+        selectedIds.push($(this).closest("tr").find("td:first").text());
+    });
+
+    // Odeslání požadavku na akci pro smazání označených sloupců
+    $.ajax({
+        url: "/RssFeeds/DeleteSelected",
+        type: "POST",
+        data: { selectedIds: selectedIds },
+        success: function () {
+          location.reload();
+        },
+        error: function () {
+            alert("chyba")
+        }
+    });
+  }
+</script>

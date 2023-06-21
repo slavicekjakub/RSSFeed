@@ -1,7 +1,7 @@
 ﻿@model List<RSSFeed.Models.Article>
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,23 +15,28 @@
     {
         @foreach (var @article in @Model)
         {
-            <h2>@article.Title</h2>
-            <b>@article.Author</b>
-            <br />
-            @if (article.Description != null)
-            {
-                @Html.Raw(article.Description)
-            }
-            <a target="_blank" href=@article.Link>@article.Link</a><br />
-            @if (article.PublishDate != null)
-            {
-                <b>Datum publikace: </b> @article.PublishDate
-            }
-            <hr />
+            <div class="flex-container">
+                <div>
+                    <h2>@article.Title</h2>
+                    <b>Autor: </b>@article.Author
+                    <br />
+                    @if (article.Description != null)
+                    {
+                        <p>@Html.Raw(article.Description)</p>
+                    }
+                    <p><a target="_blank" href=@article.Link>@article.Link</a></p>
+
+                    @if (article.PublishDate != null)
+                    {
+                        <p><b>Datum publikace: </b> @article.PublishDate</p>
+                    }
+                </div>
+            </div>
+
         }
     }
 }
 
 <div>
-    <a asp-action="Index" class="btn btn-info">Back to List</a>
+    <a asp-action="Index" class="btn btn-info">Zpět na přehled</a>
 </div>

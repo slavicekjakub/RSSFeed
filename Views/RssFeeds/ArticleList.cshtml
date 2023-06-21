@@ -1,7 +1,7 @@
 ﻿@model List<RSSFeed.Models.Article>
 
 @{
-    ViewData["Title"] = "Article list";
+    ViewData["Title"] = "Přehled článků";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,17 +12,16 @@
 @using (Html.BeginForm("ArticleList", "RssFeeds", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="hidden" value=@ViewBag.Id>
-    <label for="from-date">From:</label>
+    <label for="from-date">Od:</label>
     <input type="date" id="from-date" name="fromDate">
-    <label for="to-date">To:</label>
+    <label for="to-date">Do:</label>
     <input type="date" id="to-date" name="toDate">
     <br />
     <br />
-    <button id="filter-button" class="btn btn-primary">Filter</button>
-    <a asp-action="ArticleList" class="btn btn-success">Cancel filter</a>
-    <a asp-action="ArticleList" class="btn btn-warning">Reload</a>
-    <a asp-action="Index" class="btn btn-info">Back to List</a>
-    
+    <button id="filter-button" class="btn btn-primary">Filtr</button>
+    <a asp-action="ArticleList" class="btn btn-success">Zrušit filtr</a>
+    <a asp-action="ArticleList" class="btn btn-warning">Načíst</a>
+    <a asp-action="Index" class="btn btn-info">Zpět na přehled</a>    
 }
 
 @if (@Model != null)
@@ -32,9 +31,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Publish date</th>
-                    <th>Author</th>
+                    <th>Nadpis</th>
+                    <th>Datum publikace</th>
+                    <th>Autor</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,4 +54,3 @@
         </table>
     }
 }
-<div>

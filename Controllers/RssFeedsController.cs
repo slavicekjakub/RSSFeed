@@ -204,6 +204,18 @@ namespace RSSFeed.Controllers
       return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> DeleteSelected(int[] selectedIds)
+    {
+      if (selectedIds != null && selectedIds.Length > 0)
+      {
+        var selectedData = _context.RSSFeeds.Where(d => selectedIds.Contains(d.Id));
+
+        _context.RSSFeeds.RemoveRange(selectedData);
+         await _context.SaveChangesAsync();
+      }
+      return RedirectToAction(nameof(Index));
+    }
+
     private bool RssFeedsExists(int id)
     {
       return (_context.RSSFeeds?.Any(e => e.Id == id)).GetValueOrDefault();

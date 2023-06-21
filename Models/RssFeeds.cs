@@ -15,6 +15,7 @@ namespace RSSFeed.Models
 
     [Required]
     public string Url { get; set; } = null!;
+    public bool IsSelected { get; set; } = false;
 
   }
 }

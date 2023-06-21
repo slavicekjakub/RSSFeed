@@ -1,11 +1,11 @@
 ﻿@model RSSFeed.Models.RssFeeds
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Upravit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Upravit</h1>
 
 <h4>RssFeeds</h4>
 <hr />
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Název</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
@@ -26,8 +26,8 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
-                <a asp-action="Index" class="btn btn-info">Back to List</a>
+                <input type="submit" value="Uložit" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-info">Zpět na přehled</a>
             </div>
         </form>
     </div>
